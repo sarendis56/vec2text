@@ -29,6 +29,13 @@ pyenv local 3.11.6
 poetry install
 ```
 
+Alternatively, you can use the `environment.yaml` file to create a conda environment:
+
+```bash
+conda env create -f environment.yaml
+conda activate vec2text-repro
+```
+
 3. Install pre-commit hooks:
 
 ```
