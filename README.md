@@ -21,19 +21,19 @@ docs/ - documentation for some of the findings
 ## Installation
 
 1. Clone the repository
-2. Setup correct Python environment using poetry and pyenv:
-
-```bash
-pyenv install 3.11.6
-pyenv local 3.11.6
-poetry install
-```
-
-Alternatively, you can use the `environment.yaml` file to create a conda environment:
+2. Setup correct Python environment using Conda environment:
 
 ```bash
 conda env create -f environment.yaml
 conda activate vec2text-repro
+```
+
+Alternativelly install Python using `pyenv` and then install dependencies using `pip`:
+
+```bash
+pyenv install 3.11.6
+pyenv local 3.11.6
+pip install -r requirements.txt
 ```
 
 3. Install pre-commit hooks:
