@@ -29,6 +29,13 @@ pyenv local 3.11.6
 poetry install
 ```
 
+Alternatively, you can use the `environment.yaml` file to create a conda environment:
+
+```bash
+conda env create -f environment.yaml
+conda activate vec2text-repro
+```
+
 3. Install pre-commit hooks:
 
 ```
@@ -56,6 +63,22 @@ python scripts/inference.py <RUN_CONFIG>
 ```
 
 where `<RUN_CONFIG>` is the path to the run config file. All of the config files are located in the `runs` directory.
+
+For example, to run quantization experiments, you can run:
+
+```bash
+python scripts/inversion_attacks.py runs/attack_quant.yaml
+```
+
+### Runs and experiment setups
+The runs are organized in the `runs` directory. Each run is a YAML file that contains the configuration for the experiment. The runs are organized by the type of experiment:
+- `table_1` - Table 1 (In-domain reproduction performance of Vec2Text)
+- `table_2` - Table 2 (Out-of-domain reproduction performance)
+- `attack` - Figure 3 (Noise injection experiments)
+- `passwords_check` - Table 4 (Password reconstruction experiments)
+- `attack_quant` - Table 5 (Weight quantization experiments)
+- `seq_len_influence` - Figure 2 (Sequence length influence experiments)
+- `table_1_extension` - Figures 4 and 5 (Extended experiments on vec2text parameters)
 
 ### Configuration
 
