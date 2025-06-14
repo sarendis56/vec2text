@@ -71,7 +71,9 @@ python scripts/inversion_attacks.py runs/attack_quant.yaml
 ```
 
 ### Runs and experiment setups
+
 The runs are organized in the `runs` directory. Each run is a YAML file that contains the configuration for the experiment. The runs are organized by the type of experiment:
+
 - `table_1` - Table 1 (In-domain reproduction performance of Vec2Text)
 - `table_2` - Table 2 (Out-of-domain reproduction performance)
 - `attack` - Figure 3 (Noise injection experiments)
