@@ -36,24 +36,12 @@ pyenv local 3.11.6
 pip install -r requirements.txt
 ```
 
-3. Install pre-commit hooks:
-
-```
-pre-commit install
-```
-
-4. To export pyproject.toml to conda environment:
-
-```
-poetry run poetry2conda pyproject.toml environment.yaml
-```
-
 ## Usage
 
 To run inference scripts, you need to first login to wandb:
 
 ```bash
-poetry run wandb login
+wandb login
 ```
 
 Then you can run the scripts:
