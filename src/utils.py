@@ -2,6 +2,7 @@ from datasets import Dataset
 
 
 def split_dataset_into_chunks(dataset: Dataset, chunk_size: int) -> list[Dataset]:
+    """Splits a dataset into smaller chunks of a specified size."""
     chunks = []
     for i in range(0, len(dataset), chunk_size):
         chunks.append(dataset[i : i + chunk_size])  # noqa

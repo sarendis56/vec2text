@@ -11,6 +11,7 @@ def naive_8_bit(embeddings: torch.Tensor, max_val: float) -> torch.Tensor:
 
 
 def zero_point(embeddings: torch.Tensor, min_val: float, max_val: float) -> torch.Tensor:
+    """Zero Point Quantization"""
     scale = 255 / (max_val - min_val)
     zero_point = -round(scale * min_val) - 128
     X_q = torch.round(scale * embeddings + zero_point)
@@ -21,6 +22,7 @@ def zero_point(embeddings: torch.Tensor, min_val: float, max_val: float) -> torc
 def quantize(
     embeddings: torch.Tensor, min_val: float, max_val: float, method: str = "naive-8-bit"
 ) -> torch.Tensor:
+    """Quantize embeddings using the specified method."""
     if method == "naive-8-bit":
         return naive_8_bit(embeddings, max_val)
     elif method == "zero_point":

@@ -10,10 +10,12 @@ import vec2text
 
 
 def mean(L: list[int] | list[float]) -> float:
+    """Calculate the mean of a list of numbers."""
     return sum(L) / len(L)
 
 
 def sem(L: list[float]) -> float:
+    """Calculate the standard error of the mean (SEM) for a list of numbers."""
     result: float = scipy.stats.sem(np.array(L))
     if isinstance(result, np.ndarray):
         result_: float = result.mean().item()
@@ -22,6 +24,7 @@ def sem(L: list[float]) -> float:
 
 
 def _count_overlapping_ngrams(s1: str, s2: str, n: int) -> int:
+    """Count the number of overlapping n-grams between two strings."""
     ngrams_1 = nltk.ngrams(s1, n)
     ngrams_2 = nltk.ngrams(s2, n)
     ngram_counts_1 = collections.Counter(ngrams_1)
@@ -38,6 +41,16 @@ def compute_text_comparison_metrics(
     references_ids: list[list[int]],
     references_str: list[str],
 ) -> dict[str, float]:
+    """Compute text comparison metrics between predictions and references.
+    Args:
+        predictions_ids (list[list[int]]): List of token IDs for predicted texts.
+        predictions_str (list[str]): List of predicted texts as strings.
+        references_ids (list[list[int]]): List of token IDs for reference texts.
+        references_str (list[str]): List of reference texts as strings.
+    Returns:
+        dict[str, float]: Dictionary containing computed metrics such as BLEU, ROUGE, F1, etc.
+    """
+
     nltk.download("punkt")
     nltk.download("punkt_tab")
 

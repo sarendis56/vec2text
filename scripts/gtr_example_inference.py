@@ -5,9 +5,8 @@ from transformers import AutoModel, AutoTokenizer, PreTrainedModel, PreTrainedTo
 
 # For sanity checks, just a copy of inference examples
 # https://github.com/jxmorris12/vec2text/blob/master/README.md
-def get_gtr_embeddings(
-    text_list, encoder: PreTrainedModel, tokenizer: PreTrainedTokenizer
-) -> torch.Tensor:
+def get_gtr_embeddings(text_list, encoder: PreTrainedModel, tokenizer: PreTrainedTokenizer) -> torch.Tensor:
+    """Get embeddings for a list of texts using the GTR encoder."""
 
     inputs = tokenizer(
         text_list,
@@ -18,9 +17,7 @@ def get_gtr_embeddings(
     ).to("cuda")
 
     with torch.no_grad():
-        model_output = encoder(
-            input_ids=inputs["input_ids"], attention_mask=inputs["attention_mask"]
-        )
+        model_output = encoder(input_ids=inputs["input_ids"], attention_mask=inputs["attention_mask"])
         hidden_state = model_output.last_hidden_state
         embeddings = vec2text.models.model_utils.mean_pool(hidden_state, inputs["attention_mask"])
 

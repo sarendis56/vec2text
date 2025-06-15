@@ -19,6 +19,7 @@ from src.vec2text_measures import compute_text_comparison_metrics
 
 # load dataset
 def load_dataset(dataset="scifact"):
+    """Load the specified dataset from BEIR."""
     url = f"https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/{dataset}.zip"
     out_dir = os.path.join(pathlib.Path(__file__).parent.absolute(), "datasets")
     data_path = util.download_and_unzip(url, out_dir)
@@ -29,6 +30,7 @@ def load_dataset(dataset="scifact"):
 
 
 def calc_cosine_score(query_embeddings, corpus_embeddings):
+    """Calculate cosine similarity score between query and corpus embeddings."""
     dot = query_embeddings @ corpus_embeddings.T
     query_norm = torch.norm(query_embeddings, dim=1)
     corpus_norm = torch.norm(corpus_embeddings, dim=1)
@@ -44,6 +46,7 @@ def calc_NDCG(
     query_ids: list[str],
     qrels: dict[str, dict[str, str]],
 ) -> float:
+    """Calculate NDCG score for the given score tensor, corpus ids, query ids, and qrels."""
     ranking = torch.argsort(score_tensor, descending=True)
     normelizer = np.arange(2, 12)
     normelizer = np.log2(normelizer)
@@ -75,6 +78,7 @@ def calc_NDCG(
 
 
 def inversion_attack_loop(config):
+    """Main loop for the inversion attack on Vec2text model."""
     torch.cuda.empty_cache()
     inference_model = Vec2textInferenceModel(
         model_name=config.model_name, corrector_name=config.corrector_name

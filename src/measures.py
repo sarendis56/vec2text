@@ -4,6 +4,7 @@ from nltk.translate.bleu_score import SmoothingFunction, sentence_bleu
 
 
 def calc_bleu(real_data: list[str], pred_data: list[str]) -> float:
+    """Calculate BLEU score between real and predicted data."""
     _real_data = [sent.split() for sent in real_data]
     _pred_data = [sent.split() for sent in pred_data]
     bleu_score = 0
@@ -16,20 +17,15 @@ def calc_bleu(real_data: list[str], pred_data: list[str]) -> float:
 
 
 def calc_f1(real_data: list[str], pred_data: list[str]) -> float:
+    """Calculate F1 score between real and predicted data."""
     _real_data = [set(sent.split()) for sent in real_data]
     _pred_data = [set(sent.split()) for sent in pred_data]
     f1_score = 0.0
     for idx, sent in enumerate(_real_data):
         pred_sent = _pred_data[idx]
-        TP = len(
-            sent.intersection(pred_sent)
-        )  # get true positives by all tokens present in both sets
-        FP = len(
-            pred_sent - sent
-        )  # get false positves as tokens in the pred sent but not in the real sent
-        FN = len(
-            sent - pred_sent
-        )  # get false negatives as tokens in the real sent but not in the pred sent
+        TP = len(sent.intersection(pred_sent))  # get true positives by all tokens present in both sets
+        FP = len(pred_sent - sent)  # get false positves as tokens in the pred sent but not in the real sent
+        FN = len(sent - pred_sent)  # get false negatives as tokens in the real sent but not in the pred sent
         if TP == 0:
             f1_score += 0
             continue
@@ -41,6 +37,7 @@ def calc_f1(real_data: list[str], pred_data: list[str]) -> float:
 
 
 def calc_exact(real_data: list[str], pred_data: list[str]) -> float:
+    """Calculate exact match score between real and predicted data."""
     correct = 0
     for idx, sent in enumerate(real_data):
         if sent == pred_data[idx]:
@@ -50,6 +47,7 @@ def calc_exact(real_data: list[str], pred_data: list[str]) -> float:
 
 
 def eval_metrics(real_data: list[str], pred_data: list[str]) -> dict[str, float]:
+    """Evaluate metrics between real and predicted data."""
     bleu = calc_bleu(real_data, pred_data)
     f1 = calc_f1(real_data, pred_data)
     exact = calc_exact(real_data, pred_data)
@@ -63,6 +61,7 @@ def calc_NDCG(
     query_ids: list[str],
     qrels: dict[str, dict[str, str]],
 ) -> float:
+    """Calculate NDCG score for the given score tensor, corpus ids, query ids, and qrels."""
     ranking = torch.argsort(score_tensor, descending=True)
     normelizer = np.arange(2, 12)
     normelizer = np.log2(normelizer)

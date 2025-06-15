@@ -19,6 +19,8 @@ logging.config.dictConfig(
 
 
 def infrence_loop(config: Config):
+    """Main inference loop for Vec2text model."""
+
     infrence_model = Vec2textInferenceModel(
         model_name=config.model_name, corrector_name=config.corrector_name
     )

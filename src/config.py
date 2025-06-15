@@ -5,6 +5,8 @@ import yaml
 
 @dataclass
 class Config:
+    """Configuration class for Vec2text inference and evaluation."""
+
     model_name: str
     corrector_name: str
     dataset: str

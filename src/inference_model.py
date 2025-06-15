@@ -7,6 +7,8 @@ from transformers import AutoModel, AutoTokenizer
 
 
 class OpenAIEncoder:
+    """Encoder for OpenAI's text-embedding-ada-002 model."""
+
     def __init__(self) -> None:
         self._client = openai.OpenAI()
         self._model = "text-embedding-ada-002"
@@ -24,9 +26,9 @@ class OpenAIEncoder:
 
 
 class Vec2textInferenceModel:
+    """Inference model for Vec2text, supporting both OpenAI and Hugging Face models."""
 
     def __init__(self, model_name: str, corrector_name: str):
-
         self._corrector = vec2text.load_pretrained_corrector(corrector_name)
 
         if "ada" in model_name:
@@ -78,7 +80,17 @@ class Vec2textInferenceModel:
         add_gaussian_noise: bool = False,
         noise_lambda: float = 0.1,
     ) -> tuple[torch.Tensor, list[int]]:
-
+        """Get embeddings for a list of texts.
+        Args:
+            text_list (list[str]): List of texts to encode.
+            max_length (int): Maximum length of the tokenized input.
+            truncation (bool): Whether to truncate the input if it exceeds max_length.
+            padding (str): Padding strategy for the tokenized input.
+            add_gaussian_noise (bool): Whether to add Gaussian noise to the embeddings.
+            noise_lambda (float): Standard deviation of the Gaussian noise.
+        Returns:
+            tuple[torch.Tensor, list[int]]: Tuple containing the embeddings and token IDs.
+        """
         if isinstance(self._encoder, OpenAIEncoder):
             embeddings = self._encoder(text_list)
             inputs = self._tokenizer(
@@ -114,7 +126,18 @@ class Vec2textInferenceModel:
         do_sample: bool = False,
         top_p: float | None = None,
     ) -> list[str]:
-
+        """Invert embeddings to text.
+        Args:
+            embeddings (torch.Tensor): The embeddings to invert.
+            num_steps (int): Number of recursive steps for inversion.
+            min_length (int): Minimum length of the generated text.
+            max_length (int): Maximum length of the generated text.
+            sequence_beam_width (int): Beam width for sequence generation.
+            do_sample (bool): Whether to sample from the distribution.
+            top_p (float | None): Top-p sampling parameter.
+        Returns:
+            list[str]: List of generated text strings.
+        """
         if self._cuda_is_available():
             embeddings = embeddings.to("cuda")
         else:
@@ -130,9 +153,7 @@ class Vec2textInferenceModel:
         gen_kwargs["top_p"] = top_p
 
         if num_steps == 0:
-            assert (
-                sequence_beam_width == 0
-            ), "can't set a nonzero beam width without multiple steps"
+            assert sequence_beam_width == 0, "can't set a nonzero beam width without multiple steps"
 
             outputs = self._corrector.inversion_trainer.generate(
                 inputs={
@@ -151,16 +172,16 @@ class Vec2textInferenceModel:
                 sequence_beam_width=sequence_beam_width,
             )
 
-        prediction_strs: list[str] = self._tokenizer.batch_decode(
-            outputs, skip_special_tokens=True
-        )
+        prediction_strs: list[str] = self._tokenizer.batch_decode(outputs, skip_special_tokens=True)
 
         return prediction_strs
 
     def batch_encode_plus(self, text_list: list[str]) -> dict:
+        """Batch encode a list of texts. This is a wrapper around the tokenizer's batch_encode_plus method."""
         out: dict = self._tokenizer.batch_encode_plus(text_list, return_tensors="pt", padding=True)
         return out
 
     def batch_decode(self, input_ids: list[int]) -> list[str]:
+        """Batch decode a list of input IDs to text strings."""
         out: list[str] = self._tokenizer.batch_decode(input_ids, skip_special_tokens=True)
         return out
