@@ -3,7 +3,11 @@ import torch
 
 def naive_8_bit(embeddings: torch.Tensor, max_val: float) -> torch.Tensor:
     """
-    Absolute Maximum Quantization
+    Absolute Maximum Quantization.
+
+    In absolute max quantization, we compute the maximum of the absolute values of all
+    elements in the input and normalize the input with it, followed by scaling
+    up and rounding to the nearest whole number
     """
     X_q = torch.round(127 / max_val * embeddings)
     X_dq = max_val / 127 * X_q
@@ -11,7 +15,11 @@ def naive_8_bit(embeddings: torch.Tensor, max_val: float) -> torch.Tensor:
 
 
 def zero_point(embeddings: torch.Tensor, min_val: float, max_val: float) -> torch.Tensor:
-    """Zero Point Quantization"""
+    """Zero Point Quantization
+
+    Zero-point quantization is a technique that transforms
+    the original floating point range into an 8-bit range (INT8)
+    """
     scale = 255 / (max_val - min_val)
     zero_point = -round(scale * min_val) - 128
     X_q = torch.round(scale * embeddings + zero_point)
