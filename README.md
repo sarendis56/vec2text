@@ -1,4 +1,5 @@
-# Vec2Text Reproducibility Study
+# Rethinking the Privacy of Text Embeddings: A Reproducibility Study of “Text Embeddings Reveal (Almost) As Much As Text”
+## Vec2Text Reproducibility Study
 
 This repository contains code for reproducing results from the paper ["Text Embeddings Reveal (Almost) As Much As Text"](https://arxiv.org/abs/2310.06816).
 
