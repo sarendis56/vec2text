@@ -27,6 +27,7 @@ docs/ - documentation for some of the findings
 ```bash
 conda env create -f environment.yaml
 conda activate vec2text-repro
+pip install -e .
 ```
 
 Alternativelly install Python using `pyenv` and then install dependencies using `pip`:
@@ -35,6 +36,7 @@ Alternativelly install Python using `pyenv` and then install dependencies using 
 pyenv install 3.11.6
 pyenv local 3.11.6
 pip install -r requirements.txt
+pip install -e .
 ```
 
 ## Usage

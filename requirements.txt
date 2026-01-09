@@ -99,3 +99,4 @@ wandb==0.20.1
 wheel==0.45.1
 xxhash==3.5.0
 yarl==1.20.1
+beir==2.1.0
