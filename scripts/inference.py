@@ -49,8 +49,8 @@ def infrence_loop(config: Config):
 if __name__ == "__main__":
     config_path = sys.argv[1] if len(sys.argv) > 1 else "config.yaml"
     config = Config.load(config_path)
+    wandb.init(project="vec2text-repro", config=config)
     results = infrence_loop(config)
 
-    wandb.init(project="vec2text-repro", config=config)
     wandb.log(results)
     wandb.finish()

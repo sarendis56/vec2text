@@ -200,7 +200,7 @@ if __name__ == "__main__":
     print("GPU available?", torch.cuda.is_available())
     config_path = sys.argv[1] if len(sys.argv) > 1 else "config.yaml"
     config = Config.load(config_path)
-    results = inversion_attack_loop(config)
     wandb.init(project="vec2text-repro", config=config)
+    results = inversion_attack_loop(config)
     wandb.log(results)
     wandb.finish()
